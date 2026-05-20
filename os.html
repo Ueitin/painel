@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Painel NOC</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#050505;
+    color:#ffffff;
+    padding:20px;
+    transition:0.3s;
+}
+
+.topo{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+h1{
+    font-size:28px;
+}
+
+.config{
+    position:relative;
+}
+
+.btn-config{
+    width:45px;
+    height:45px;
+    border:none;
+    border-radius:12px;
+    background:#151515;
+    color:white;
+    cursor:pointer;
+    font-size:20px;
+}
+
+.menu-config{
+    position:absolute;
+    top:55px;
+    right:0;
+    background:#151515;
+    padding:10px;
+    border-radius:12px;
+    display:none;
+    border:1px solid #2a2a2a;
+    z-index:100;
+}
+
+.menu-config button{
+    width:180px;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:#202020;
+    color:white;
+    cursor:pointer;
+}
+
+.abas{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.aba{
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#151515;
+    color:white;
+    font-weight:bold;
+}
+
+.aba.ativa{
+    background:#2563eb;
+}
+
+.container{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.card{
+    background:#101010;
+    padding:20px;
+    border-radius:18px;
+    border:1px solid #1f1f1f;
+}
+
+.subcard{
+    background:#0b0b0b;
+    border:1px solid #1f1f1f;
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:20px;
+}
+
+.subtitulo{
+    font-size:18px;
+    margin-bottom:18px;
+    color:#60a5fa;
+}
+
+.subtitulo-roxo{
+    color:#a855f7;
+}
+
+.campo{
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#1a1a1a;
+    color:white;
+    border:1px solid #2a2a2a;
+}
+
+input:focus{
+    outline:none;
+    border:1px solid #2563eb;
+}
+
+button{
+    padding:12px 18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.salvar{
+    background:#16a34a;
+    color:white;
+}
+
+.limpar{
+    background:#dc2626;
+    color:white;
+    margin-left:10px;
+}
+
+.item{
+    padding:15px;
+    border-radius:14px;
+    margin-bottom:15px;
+    border:1px solid #262626;
+    transition:0.3s;
+}
+
+.status-pendente{
+    background:#3a2e00;
+}
+
+.status-lancada{
+    background:#052e16;
+    opacity:0.88;
+}
+
+.item-topo{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.info-esquerda{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.badge-id{
+    background:#2563eb;
+    color:white;
+    padding:8px 12px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.status-box{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#0d0d0d;
+    padding:8px 12px;
+    border-radius:10px;
+    border:1px solid #262626;
+}
+
+.status-box label{
+    margin:0;
+    font-size:14px;
+    cursor:pointer;
+}
+
+textarea{
+    width:100%;
+    height:125px;
+    border:none;
+    border-radius:10px;
+    padding:10px;
+    resize:none;
+    background:#090909;
+    color:white;
+    margin-top:10px;
+    border:1px solid #202020;
+    font-size:14px;
+}
+
+.acoes{
+    margin-top:10px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.btn-copiar{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-discord{
+    background:#7c3aed;
+    color:white;
+}
+
+.btn-excluir{
+    background:#dc2626;
+    color:white;
+}
+
+.radio-group{
+    display:flex;
+    gap:20px;
+    margin-top:10px;
+}
+
+.radio-group label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.contador{
+    background:#151515;
+    padding:15px;
+    border-radius:14px;
+    margin-bottom:20px;
+    border:1px solid #262626;
+    font-weight:bold;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.contador-info{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.btn-limpar-mini{
+    background:#b91c1c;
+    color:white;
+    border:none;
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.light-mode{
+    background:#e5e7eb;
+    color:#111827;
+}
+
+.light-mode .card,
+.light-mode .contador{
+    background:white;
+}
+
+.light-mode .subcard{
+    background:#f3f4f6;
+}
+
+.light-mode textarea{
+    background:white;
+    color:black;
+}
+
+.light-mode input{
+    background:white;
+    color:black;
+}
+
+.light-mode .btn-config{
+    background:white;
+    color:black;
+}
+
+.light-mode .menu-config{
+    background:white;
+}
+
+.light-mode .menu-config button{
+    background:#f3f4f6;
+    color:black;
+}
+
+.light-mode .aba{
+    background:white;
+    color:black;
+}
+
+@media(max-width:900px){
+
+.container{
+    grid-template-columns:1fr;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="topo">
+
+<h1>Painel NOC</h1>
+
+<div class="config">
+
+<button class="btn-config" onclick="abrirConfig()">
+⚙️
+</button>
+
+<div class="menu-config" id="menuConfig">
+
+<button onclick="trocarTema()">
+🌙 Alternar Tema
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="abas">
+
+<button class="aba ativa" onclick="trocarAba('os', event)">
+Ordens de Serviço
+</button>
+
+<button class="aba" onclick="trocarAba('rota', event)">
+Rotas Down
+</button>
+
+</div>
+
+<!-- O.S -->
+
+<div id="paginaOS">
+
+<div class="container">
+
+<div class="card">
+
+<h2>Nova O.S.</h2>
+
+<div class="subcard">
+
+<h3 class="subtitulo">
+📋 Dados da O.S.
+</h3>
+
+<div class="campo">
+<label>Problema do Cliente</label>
+<input type="text" id="problema">
+</div>
+
+<div class="campo">
+<label>Disp.</label>
+<input type="text" id="disp">
+</div>
+
+<div class="campo">
+<label>Ref.</label>
+<input type="text" id="ref">
+</div>
+
+<div class="campo">
+<label>Última O.S.</label>
+<input type="text" id="ultima">
+</div>
+
+<div class="campo">
+<label>Contato WhatsApp</label>
+<input type="text" id="whatsapp">
+</div>
+
+</div>
+
+<div class="subcard">
+
+<h3 class="subtitulo subtitulo-roxo">
+📢 Dados do Chamado
+</h3>
+
+<div class="campo">
+<label>ID Contrato</label>
+<input type="text" id="contrato">
+</div>
+
+<div class="campo">
+<label>Código Problema</label>
+<input type="text" id="codigoProblema">
+</div>
+
+<div class="campo">
+<label>POP / Bairro</label>
+<input type="text" id="pop">
+</div>
+
+</div>
+
+<button class="salvar" onclick="salvarOS()">
+Salvar
+</button>
+
+<button class="limpar" onclick="limparOS()">
+Limpar
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>Fila de O.S.</h2>
+
+<div class="contador">
+
+<div class="contador-info" id="contadorOS">
+
+<span>🟡 Pendentes: 0</span>
+<span>🟢 Lançadas: 0</span>
+
+</div>
+
+<button
+class="btn-limpar-mini"
+onclick="limparLancadas()"
+title="Limpar lançadas">
+🧹
+</button>
+
+</div>
+
+<div class="campo">
+
+<input
+type="text"
+id="pesquisaOS"
+placeholder="Pesquisar por ID ou texto..."
+onkeyup="renderizarOS()">
+
+</div>
+
+<div id="listaOS"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ROTAS -->
+
+<div id="paginaRota" style="display:none;">
+
+<div class="container">
+
+<div class="card">
+
+<h2>Nova Rota Down</h2>
+
+<div class="campo">
+<label>Cidade</label>
+<input type="text" id="cidade">
+</div>
+
+<div class="campo">
+<label>Nome da Rua</label>
+<input type="text" id="rua">
+</div>
+
+<div class="campo">
+<label>Bairro</label>
+<input type="text" id="bairro">
+</div>
+
+<div class="campo">
+<label>VLAN</label>
+<input type="text" id="vlan">
+</div>
+
+<div class="campo">
+<label>Hora da Queda</label>
+<input type="text" id="queda">
+</div>
+
+<div class="campo">
+<label>Cliente ID</label>
+<input type="text" id="clienteid">
+</div>
+
+<div class="campo">
+
+<label>Tipo de Cliente</label>
+
+<div class="radio-group">
+
+<label>
+<input type="radio" name="tipoCliente" value="LOS" checked>
+LOS
+</label>
+
+<label>
+<input type="radio" name="tipoCliente" value="UTP">
+UTP
+</label>
+
+</div>
+
+</div>
+
+<button class="salvar" onclick="salvarRota()">
+Salvar
+</button>
+
+<button class="limpar" onclick="limparRota()">
+Limpar
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>Fila de Rotas</h2>
+
+<div id="listaRotas"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let ordens = JSON.parse(localStorage.getItem("ordens")) || [];
+let rotas = JSON.parse(localStorage.getItem("rotas")) || [];
+
+/* CONFIG */
+
+function abrirConfig(){
+
+const menu = document.getElementById("menuConfig");
+
+menu.style.display =
+menu.style.display === "block"
+? "none"
+: "block";
+
+}
+
+function trocarTema(){
+
+document.body.classList.toggle("light-mode");
+
+if(document.body.classList.contains("light-mode")){
+    localStorage.setItem("tema","light");
+}else{
+    localStorage.setItem("tema","dark");
+}
+
+}
+
+const temaSalvo = localStorage.getItem("tema");
+
+if(temaSalvo === "light"){
+    document.body.classList.add("light-mode");
+}
+
+/* ABAS */
+
+function trocarAba(tipo, event){
+
+document.getElementById("paginaOS").style.display =
+tipo === "os" ? "block" : "none";
+
+document.getElementById("paginaRota").style.display =
+tipo === "rota" ? "block" : "none";
+
+document.querySelectorAll(".aba").forEach(btn=>{
+    btn.classList.remove("ativa");
+});
+
+event.target.classList.add("ativa");
+
+}
+
+/* O.S */
+
+function gerarTextoOS(os){
+
+return `Problema do Cliente: ${os.problema}
+Disp.: ${os.disp}
+Ref.: ${os.ref}
+Última O.S.: ${os.ultima}
+Contato WhatsApp: ${os.whatsapp}`;
+
+}
+
+function gerarAvisoDiscord(os){
+
+return `${os.contrato} - ${os.codigoProblema} - ${os.pop}`;
+
+}
+
+function salvarOS(){
+
+const nova = {
+
+id:Date.now(),
+
+problema:problema.value,
+disp:disp.value,
+ref:ref.value,
+ultima:ultima.value,
+whatsapp:whatsapp.value,
+
+contrato:contrato.value,
+codigoProblema:codigoProblema.value,
+pop:pop.value.toUpperCase(),
+
+status:"PENDENTE"
+
+};
+
+ordens.unshift(nova);
+
+localStorage.setItem("ordens", JSON.stringify(ordens));
+
+renderizarOS();
+
+limparOS();
+
+}
+
+function limparOS(){
+
+problema.value="";
+disp.value="";
+ref.value="";
+ultima.value="";
+whatsapp.value="";
+
+contrato.value="";
+codigoProblema.value="";
+pop.value="";
+
+}
+
+function alterarStatusOS(id, status){
+
+ordens = ordens.map(os=>{
+
+if(os.id === id){
+    os.status = status;
+}
+
+return os;
+
+});
+
+ordens.sort((a,b)=>{
+
+if(a.status === "PENDENTE" && b.status === "LANÇADA"){
+    return -1;
+}
+
+if(a.status === "LANÇADA" && b.status === "PENDENTE"){
+    return 1;
+}
+
+return b.id - a.id;
+
+});
+
+localStorage.setItem("ordens", JSON.stringify(ordens));
+
+renderizarOS();
+
+}
+
+function limparLancadas(){
+
+const confirmar = confirm(
+"Deseja remover todas as O.S. lançadas?"
+);
+
+if(!confirmar){
+    return;
+}
+
+ordens = ordens.filter(os =>
+os.status !== "LANÇADA"
+);
+
+localStorage.setItem("ordens", JSON.stringify(ordens));
+
+renderizarOS();
+
+}
+
+function renderizarOS(){
+
+listaOS.innerHTML="";
+
+const pesquisa = document
+.getElementById("pesquisaOS")
+.value
+.toString()
+.toLowerCase()
+.trim();
+
+let pendentes = 0;
+let lancadas = 0;
+
+ordens
+.filter(os => {
+
+const problema = (os.problema || "").toLowerCase();
+const pop = (os.pop || "").toLowerCase();
+const contrato = String(os.contrato || "").toLowerCase();
+const ref = (os.ref || "").toLowerCase();
+
+const somenteNumero = /^\d+$/.test(pesquisa);
+
+if(somenteNumero){
+
+return contrato === pesquisa;
+
+}
+
+return (
+problema.includes(pesquisa) ||
+pop.includes(pesquisa) ||
+ref.includes(pesquisa)
+);
+
+})
+
+.forEach(os=>{
+
+if(os.status === "PENDENTE"){
+    pendentes++;
+}
+
+if(os.status === "LANÇADA"){
+    lancadas++;
+}
+
+let classeStatus = "";
+
+if(os.status === "PENDENTE"){
+    classeStatus = "status-pendente";
+}
+
+if(os.status === "LANÇADA"){
+    classeStatus = "status-lancada";
+}
+
+listaOS.innerHTML += `
+
+<div class="item ${classeStatus}">
+
+<div class="item-topo">
+
+<div class="info-esquerda">
+
+<div class="badge-id">
+#${os.contrato || "SEM ID"}
+</div>
+
+<div class="status-box">
+
+<input
+type="checkbox"
+${os.status === "PENDENTE" ? "checked" : ""}
+onclick="alterarStatusOS(${os.id}, 'PENDENTE')">
+
+<label>PENDENTE</label>
+
+</div>
+
+<div class="status-box">
+
+<input
+type="checkbox"
+${os.status === "LANÇADA" ? "checked" : ""}
+onclick="alterarStatusOS(${os.id}, 'LANÇADA')">
+
+<label>O.S. LANÇADA</label>
+
+</div>
+
+</div>
+
+</div>
+
+<textarea readonly>${gerarTextoOS(os)}</textarea>
+
+<div class="acoes">
+
+<button class="btn-copiar"
+onclick="copiarTexto(\`${gerarTextoOS(os)}\`)">
+📋 Copiar O.S.
+</button>
+
+<button class="btn-discord"
+onclick="copiarTexto(\`${gerarAvisoDiscord(os)}\`)">
+📢 Copiar Chamado
+</button>
+
+<button class="btn-excluir"
+onclick="excluirOS(${os.id})">
+🗑 Excluir
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("contadorOS").innerHTML = `
+
+<span>🟡 Pendentes: ${pendentes}</span>
+<span>🟢 Lançadas: ${lancadas}</span>
+
+`;
+
+}
+
+function excluirOS(id){
+
+ordens = ordens.filter(os=>os.id !== id);
+
+localStorage.setItem("ordens", JSON.stringify(ordens));
+
+renderizarOS();
+
+}
+
+/* ROTAS */
+
+function gerarTextoRota(r){
+
+return `ROTA DOWN
+CIDADE: ${r.cidade}
+NOME DA RUA: ${r.rua}
+BAIRRO: ${r.bairro}
+VLAN: ${r.vlan}
+HORA DA QUEDA: ${r.queda}
+CLIENTE ID: ${r.clienteid}
+${r.tipo}`;
+
+}
+
+function salvarRota(){
+
+const nova = {
+
+id:Date.now(),
+
+cidade:cidade.value,
+rua:rua.value,
+bairro:bairro.value,
+vlan:vlan.value,
+queda:queda.value,
+clienteid:clienteid.value,
+
+tipo:document.querySelector('input[name="tipoCliente"]:checked').value
+
+};
+
+rotas.unshift(nova);
+
+localStorage.setItem("rotas", JSON.stringify(rotas));
+
+renderizarRotas();
+
+limparRota();
+
+}
+
+function limparRota(){
+
+cidade.value="";
+rua.value="";
+bairro.value="";
+vlan.value="";
+queda.value="";
+clienteid.value="";
+
+}
+
+function renderizarRotas(){
+
+listaRotas.innerHTML="";
+
+rotas.forEach(r=>{
+
+listaRotas.innerHTML += `
+
+<div class="item status-pendente">
+
+<textarea readonly>${gerarTextoRota(r)}</textarea>
+
+<div class="acoes">
+
+<button class="btn-copiar"
+onclick="copiarTexto(\`${gerarTextoRota(r)}\`)">
+📋 Copiar
+</button>
+
+<button class="btn-excluir"
+onclick="excluirRota(${r.id})">
+🗑 Excluir
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+function excluirRota(id){
+
+rotas = rotas.filter(r=>r.id !== id);
+
+localStorage.setItem("rotas", JSON.stringify(rotas));
+
+renderizarRotas();
+
+}
+
+function copiarTexto(texto){
+
+navigator.clipboard.writeText(texto);
+
+alert("Copiado!");
+
+}
+
+renderizarOS();
+renderizarRotas();
+
+</script>
+
+</body>
+</html>
