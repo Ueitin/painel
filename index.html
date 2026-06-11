@@ -5,9 +5,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Painel NOC</title>
+<title>Painel</title>
 
 <style>
+
+:root{
+    --cor-destaque: #2563eb;
+    --cor-fundo: #151515;
+}
 
 *{
     margin:0;
@@ -91,7 +96,7 @@ h1{
 }
 
 .aba.ativa{
-    background:#2563eb;
+    background:var(--cor-destaque);
 }
 
 .container{
@@ -101,7 +106,7 @@ h1{
 }
 
 .card{
-    background:#101010;
+    background:var(--cor-fundo);
     padding:20px;
     border-radius:18px;
     border:1px solid #1f1f1f;
@@ -147,7 +152,7 @@ input{
 
 input:focus{
     outline:none;
-    border:1px solid #2563eb;
+    border:1px solid var(--cor-destaque);
 }
 
 button{
@@ -159,7 +164,7 @@ button{
 }
 
 .salvar{
-    background:#16a34a;
+    background:var(--cor-destaque);
     color:white;
 }
 
@@ -249,7 +254,7 @@ textarea{
 }
 
 .btn-copiar{
-    background:#2563eb;
+    background:var(--cor-destaque);
     color:white;
 }
 
@@ -261,6 +266,189 @@ textarea{
 .btn-excluir{
     background:#dc2626;
     color:white;
+}
+
+.btn-editar{
+    background:#f59e0b;
+    color:white;
+}
+
+.abas-scripts{
+    display:flex;
+    gap:8px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.aba-script{
+    padding:10px 16px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#151515;
+    color:white;
+    font-size:14px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+
+.aba-script:hover{
+    background:#202020;
+}
+
+.aba-script.ativa{
+    background:var(--cor-destaque);
+}
+
+.script-item{
+    padding:16px;
+    border-radius:12px;
+    margin-bottom:12px;
+    border:1px solid #262626;
+    background:#0b0b0b;
+    transition:0.3s;
+}
+
+.script-item:hover{
+    border-color:#2563eb;
+}
+
+.script-text{
+    font-size:14px;
+    line-height:1.6;
+    margin-bottom:12px;
+    color:#e5e7eb;
+}
+
+.script-btn{
+    width:100%;
+    padding:8px 12px;
+    border:none;
+    border-radius:6px;
+    background:var(--cor-destaque);
+    color:white;
+    cursor:pointer;
+    font-weight:600;
+    font-size:13px;
+    transition:0.3s;
+    margin-bottom:8px;
+}
+
+.script-btn:hover{
+    background:#1d4ed8;
+}
+
+.script-btn.copiado{
+    background:#16a34a;
+}
+
+#modalPersonalizacao{
+    display:none;
+}
+
+#modalPersonalizacao.mostrar{
+    display:flex;
+}
+
+.color-picker{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:10px;
+}
+
+.color-option{
+    width:40px;
+    height:40px;
+    border-radius:8px;
+    border:2px solid transparent;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.color-option:hover{
+    border-color:white;
+    transform:scale(1.1);
+}
+
+.color-option.selecionado{
+    border-color:white;
+    box-shadow:0 0 10px rgba(255,255,255,0.5);
+}
+
+.script-acoes{
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+}
+
+.btn-editar-script{
+    flex:1;
+    padding:8px 12px;
+    border:none;
+    border-radius:6px;
+    background:#f59e0b;
+    color:white;
+    cursor:pointer;
+    font-weight:600;
+    font-size:13px;
+    transition:0.3s;
+}
+
+.btn-editar-script:hover{
+    background:#d97706;
+}
+
+.btn-excluir-script{
+    flex:1;
+    padding:8px 12px;
+    border:none;
+    border-radius:6px;
+    background:#dc2626;
+    color:white;
+    cursor:pointer;
+    font-weight:600;
+    font-size:13px;
+    transition:0.3s;
+}
+
+.btn-excluir-script:hover{
+    background:#b91c1c;
+}
+
+#novaCategoriaScript{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #262626;
+    background:#151515;
+    color:white;
+    font-size:14px;
+    cursor:pointer;
+}
+
+#novoScriptTexto{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #262626;
+    background:#151515;
+    color:white;
+    font-size:14px;
+    font-family:Arial, sans-serif;
+    resize:vertical;
+}
+
+#novaCategoriaNome,
+#novaCategoriaIcone{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #262626;
+    background:#151515;
+    color:white;
+    font-size:14px;
 }
 
 .radio-group{
@@ -364,7 +552,7 @@ textarea{
 
 <div class="topo">
 
-<h1>Painel NOC</h1>
+<h1>Painel</h1>
 
 <div class="config">
 
@@ -378,6 +566,10 @@ textarea{
 🌙 Alternar Tema
 </button>
 
+<button onclick="abrirPersonalizacao()">
+🎨 Personalizar
+</button>
+
 </div>
 
 </div>
@@ -386,12 +578,20 @@ textarea{
 
 <div class="abas">
 
-<button class="aba ativa" onclick="trocarAba('os', event)">
+<button class="aba ativa" onclick="trocarAba('scripts', event)">
+📋 Scripts de Atendimento
+</button>
+
+<button class="aba" onclick="trocarAba('os', event)">
 Ordens de Serviço
 </button>
 
 <button class="aba" onclick="trocarAba('rota', event)">
 Rotas Down
+</button>
+
+<button class="aba" onclick="trocarAba('transferencia', event)">
+Transferência de Endereço
 </button>
 
 </div>
@@ -404,7 +604,7 @@ Rotas Down
 
 <div class="card">
 
-<h2>Nova O.S.</h2>
+<h2 id="tituloOS">Nova O.S.</h2>
 
 <div class="subcard">
 
@@ -470,6 +670,10 @@ Salvar
 Limpar
 </button>
 
+<button class="limpar" id="btnCancelarOS" onclick="cancelarEdicaoOS()" style="display:none;">
+Cancelar Edição
+</button>
+
 </div>
 
 <div class="card">
@@ -487,7 +691,7 @@ Limpar
 
 <button
 class="btn-limpar-mini"
-onclick="limparLancadas()"
+onclick="limparLancadasOS()"
 title="Limpar lançadas">
 🧹
 </button>
@@ -520,7 +724,7 @@ onkeyup="renderizarOS()">
 
 <div class="card">
 
-<h2>Nova Rota Down</h2>
+<h2 id="tituloRota">Nova Rota Down</h2>
 
 <div class="campo">
 <label>Cidade</label>
@@ -580,13 +784,396 @@ Salvar
 Limpar
 </button>
 
+<button class="limpar" id="btnCancelarRota" onclick="cancelarEdicaoRota()" style="display:none;">
+Cancelar Edição
+</button>
+
 </div>
 
 <div class="card">
 
 <h2>Fila de Rotas</h2>
 
+<div class="contador">
+
+<div class="contador-info" id="contadorRotas">
+
+<span>🟡 Pendentes: 0</span>
+<span>🟢 Lançadas: 0</span>
+
+</div>
+
+<button
+class="btn-limpar-mini"
+onclick="limparLancadasRotas()"
+title="Limpar lançadas">
+🧹
+</button>
+
+</div>
+
 <div id="listaRotas"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- TRANSFERÊNCIA -->
+
+<div id="paginaTransferencia" style="display:none;">
+
+<div class="container">
+
+<div class="card">
+
+<h2 id="tituloTransferencia">Nova Transferência</h2>
+
+<div class="campo">
+<label>ID Contrato</label>
+<input type="text" id="tContrato">
+</div>
+
+<div class="campo">
+<label>Tipo</label>
+
+<div class="radio-group">
+
+<label>
+<input type="radio" name="tipoTransferencia" value="FTTH" checked>
+FTTH
+</label>
+
+<label>
+<input type="radio" name="tipoTransferencia" value="UTP">
+UTP
+</label>
+
+</div>
+
+</div>
+
+<div class="campo">
+<label>Endereço Antigo</label>
+<input type="text" id="tEnderecoAntigo">
+</div>
+
+<div class="campo">
+<label>Endereço Novo</label>
+<input type="text" id="tEnderecoNovo">
+</div>
+
+<div class="campo">
+<label>Data</label>
+<input type="text" id="tData">
+</div>
+
+<div class="campo">
+
+<label>Período</label>
+
+<div class="radio-group">
+<label><input type="radio" name="tPeriodo" value="INTEGRAL" checked> INTEGRAL</label>
+<label><input type="radio" name="tPeriodo" value="MANHÃ"> MANHÃ</label>
+<label><input type="radio" name="tPeriodo" value="TARDE"> TARDE</label>
+</div>
+
+</div>
+
+<div class="campo">
+
+<label>Cabo Reaproveitado</label>
+
+<div class="radio-group">
+<label><input type="radio" name="tCabo" value="SIM"> SIM</label>
+<label><input type="radio" name="tCabo" value="NÃO" checked> NÃO</label>
+</div>
+
+</div>
+
+<div class="campo">
+
+<label>Já Possui ONU</label>
+
+<div class="radio-group">
+<label><input type="radio" name="tONU" value="SIM"> SIM</label>
+<label><input type="radio" name="tONU" value="NÃO" checked> NÃO</label>
+</div>
+
+</div>
+
+<div class="campo">
+
+<label>Valor a ser Pago</label>
+
+<div style="display:flex;align-items:center;gap:15px;flex-wrap:wrap;">
+
+<input
+type="text"
+id="tValor"
+placeholder="R$"
+style="width:150px;">
+
+<label>
+<input type="radio" name="tPagamento" value="PIX" checked>
+PIX
+</label>
+
+<label>
+<input type="radio" name="tPagamento" value="À VISTA">
+À VISTA
+</label>
+
+<label>
+<input type="radio" name="tPagamento" value="CARTÃO">
+CARTÃO
+</label>
+
+</div>
+
+</div>
+
+<button class="salvar" onclick="salvarTransferencia()">
+Salvar
+</button>
+
+<button class="limpar" onclick="limparTransferencia()">
+Limpar
+</button>
+
+<button class="limpar" id="btnCancelarTransferencia" onclick="cancelarEdicaoTransferencia()" style="display:none;">
+Cancelar Edição
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>Transferências</h2>
+
+<div class="contador">
+
+<div class="contador-info" id="contadorTransferencias">
+
+<span>🟡 Pendentes: 0</span>
+<span>🟢 Lançadas: 0</span>
+
+</div>
+
+<button
+class="btn-limpar-mini"
+onclick="limparLancadasTransferencias()"
+title="Limpar lançadas">
+🧹
+</button>
+
+</div>
+
+<div id="listaTransferencias"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- PERSONALIZAÇÃO -->
+
+<div id="modalPersonalizacao" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; justify-content:center; align-items:center;">
+
+<div class="card" style="max-width:500px; width:90%; max-height:90vh; overflow-y:auto;">
+
+<h2>🎨 Personalização</h2>
+
+<div class="campo">
+
+<label>Cor de Destaque</label>
+
+<div class="color-picker">
+
+<button class="color-option" onclick="setCorDestaque('#2563eb')" style="background:#2563eb;"></button>
+
+<button class="color-option" onclick="setCorDestaque('#dc2626')" style="background:#dc2626;"></button>
+
+<button class="color-option" onclick="setCorDestaque('#16a34a')" style="background:#16a34a;"></button>
+
+<button class="color-option" onclick="setCorDestaque('#9333ea')" style="background:#9333ea;"></button>
+
+<button class="color-option" onclick="setCorDestaque('#f59e0b')" style="background:#f59e0b;"></button>
+
+<button class="color-option" onclick="setCorDestaque('#0891b2')" style="background:#0891b2;"></button>
+
+<input type="color" id="corDestaqueCustom" value="#2563eb" onchange="setCorDestaque(this.value)">
+
+</div>
+
+</div>
+
+<div class="campo">
+
+<label>Cor de Fundo dos Cards</label>
+
+<div class="color-picker">
+
+<button class="color-option" onclick="setCorFundo('#151515')" style="background:#151515; border:1px solid #333;"></button>
+
+<button class="color-option" onclick="setCorFundo('#1a1a2e')" style="background:#1a1a2e;"></button>
+
+<button class="color-option" onclick="setCorFundo('#16213e')" style="background:#16213e;"></button>
+
+<button class="color-option" onclick="setCorFundo('#0f0f23')" style="background:#0f0f23;"></button>
+
+<input type="color" id="corFundoCustom" value="#151515" onchange="setCorFundo(this.value)">
+
+</div>
+
+</div>
+
+<button class="salvar" onclick="salvarPersonalizacao()">
+💾 Salvar Personalização
+</button>
+
+<button class="limpar" onclick="fecharPersonalizacao()">
+✖ Fechar
+</button>
+
+</div>
+
+</div>
+
+<!-- SCRIPTS DE ATENDIMENTO -->
+
+<div id="paginaScripts" style="display:none;">
+
+<div class="card">
+
+<h2>📋 Painel de Scripts de Atendimento (NOC)</h2>
+
+<div class="campo">
+
+<input
+type="text"
+id="pesquisaScripts"
+placeholder="🔍 Pesquisar scripts..."
+onkeyup="filtrarScripts()">
+
+</div>
+
+<div class="campo" id="seletorPeriodo" style="display:none;">
+
+<label>Período do dia:</label>
+
+<div class="radio-group">
+
+<label>
+<input type="radio" name="periodoDia" value="dia" checked onchange="mudarPeriodo(this.value)">
+dia
+</label>
+
+<label>
+<input type="radio" name="periodoDia" value="tarde" onchange="mudarPeriodo(this.value)">
+tarde
+</label>
+
+<label>
+<input type="radio" name="periodoDia" value="noite" onchange="mudarPeriodo(this.value)">
+noite
+</label>
+
+</div>
+
+</div>
+
+<div class="abas-scripts" id="abasScripts">
+
+</div>
+
+<div id="listaScripts"></div>
+
+</div>
+
+<div class="card">
+
+<h2>Gerenciar Scripts</h2>
+
+<div class="campo">
+
+<label>Categoria</label>
+
+<select id="novaCategoriaScript">
+
+</select>
+
+</div>
+
+<div class="campo">
+
+<label>Texto do Script</label>
+
+<textarea id="novoScriptTexto" rows="4" placeholder="Digite o texto do script aqui... (use PERIODO para saudações dinâmicas)"></textarea>
+
+</div>
+
+<button class="salvar" onclick="adicionarScript()">
+➕ Adicionar Script
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>Gerenciar Categorias</h2>
+
+<div class="campo">
+
+<label>Nome da Categoria</label>
+
+<input type="text" id="novaCategoriaNome" placeholder="Ex: Suporte Técnico">
+
+</div>
+
+<div class="campo">
+
+<label>Ícone (emoji)</label>
+
+<input type="text" id="novaCategoriaIcone" placeholder="Ex: 🔧" maxlength="2">
+
+</div>
+
+<button class="salvar" onclick="adicionarCategoria()">
+➕ Adicionar Categoria
+</button>
+
+<div class="campo" style="margin-top:20px;">
+
+<label>Editar Categoria Existente</label>
+
+<select id="editarCategoriaSelect">
+
+<option value="">Selecione uma categoria...</option>
+
+</select>
+
+<button class="salvar" onclick="carregarCategoriaParaEdicao()" style="margin-top:10px;">
+✏️ Carregar para Edição
+</button>
+
+</div>
+
+<div class="campo" style="margin-top:20px;">
+
+<label>Excluir Categoria</label>
+
+<select id="excluirCategoriaSelect">
+
+<option value="">Selecione uma categoria...</option>
+
+</select>
+
+<button class="limpar" onclick="excluirCategoriaSelecionada()" style="margin-top:10px;">
+🗑 Excluir Selecionada
+</button>
 
 </div>
 
@@ -598,6 +1185,161 @@ Limpar
 
 let ordens = JSON.parse(localStorage.getItem("ordens")) || [];
 let rotas = JSON.parse(localStorage.getItem("rotas")) || [];
+let transferencias = JSON.parse(localStorage.getItem("transferencias")) || [];
+
+let editandoOS = null;
+let editandoRota = null;
+let editandoTransferencia = null;
+
+let categoriaScriptAtual = "saudacao";
+
+let periodoDia = "dia";
+
+let personalizacao = JSON.parse(localStorage.getItem("personalizacao")) || {
+    corDestaque: "#2563eb",
+    corFundo: "#151515"
+};
+
+function detectarPeriodoAutomatico(){
+
+const hora = new Date().getHours();
+
+if(hora >= 5 && hora < 12){
+    return "dia";
+}else if(hora >= 12 && hora < 18){
+    return "tarde";
+}else{
+    return "noite";
+}
+
+}
+
+/* FUNÇÕES PERSONALIZAÇÃO */
+
+function abrirPersonalizacao(){
+
+document.getElementById("corDestaqueCustom").value = personalizacao.corDestaque;
+document.getElementById("corFundoCustom").value = personalizacao.corFundo;
+
+document.getElementById("modalPersonalizacao").style.display = "flex";
+
+}
+
+function fecharPersonalizacao(){
+
+document.getElementById("modalPersonalizacao").style.display = "none";
+
+}
+
+function setCorDestaque(cor){
+
+personalizacao.corDestaque = cor;
+aplicarPersonalizacao();
+
+}
+
+function setCorFundo(cor){
+
+personalizacao.corFundo = cor;
+aplicarPersonalizacao();
+
+}
+
+function salvarPersonalizacao(){
+
+localStorage.setItem("personalizacao", JSON.stringify(personalizacao));
+
+alert("Personalização salva!");
+fecharPersonalizacao();
+
+}
+
+function aplicarPersonalizacao(){
+
+document.documentElement.style.setProperty("--cor-destaque", personalizacao.corDestaque);
+document.documentElement.style.setProperty("--cor-fundo", personalizacao.corFundo);
+
+}
+
+let editandoScript = null;
+
+let editandoCategoria = null;
+
+let categoriasScripts = JSON.parse(localStorage.getItem("categoriasScripts")) || [
+{id:"saudacao", nome:"Saudação", icone:"👋"},
+{id:"suporte", nome:"Suporte Técnico", icone:"🔧"},
+{id:"visita", nome:"Visita Técnica", icone:"🏠"},
+{id:"rota", nome:"Rota / Indisponibilidade", icone:"🛣️"},
+{id:"procedimentos", nome:"Procedimentos", icone:"⚙️"},
+{id:"fidelidade", nome:"Fidelidade", icone:"💎"},
+{id:"encerramento", nome:"Encerramento", icone:"👋"},
+{id:"senha", nome:"Senha / Roteador", icone:"🔑"}
+];
+
+let scriptsDeAtendimento = JSON.parse(localStorage.getItem("scriptsDeAtendimento")) || {
+
+saudacao: [
+"PERIODO, me chamo Welington, em que posso te ajudar?",
+"PERIODO, me chamo Welington, irei verificar para você, só um momento.",
+"PERIODO! Me chamo Welington, sou do setor de Suporte da Alternativa. Sua localidade estava passando por uma indisponibilidade, Os reparos já foram finalizado e em sistema consta conectado, poderia verificar se normalizou ?"
+],
+
+suporte: [
+"Poderia me informar se seriam dois aparelhos(FIBRA + ROTEADOR) ou se seria apenas um aparelho(ROTEADOR)?"
+],
+
+visita: [
+"Nesse caso, seria preciso uma visita técnica para o técnico estar verificando, a visita técnica teria o prazo de 24h uteis com nossos técnicos podendo ir o quanto antes. você me autoriza abrir a ordem de serviço?",
+"",
+`Preciso que confirme o endereço completo, por gentileza.
+Nome da rua:
+Número da casa:
+Bairro:
+Cidade:
+
+Qual o ponto de referência mais próximo da sua casa?
+
+Sua disponibilidade para receber o técnico manhã, tarde ou o dia todo?
+
+*CASO NÃO CONFIRME TODAS AS INFORMAÇÕES ACIMA A ORDEM DE SERVIÇO NÃO SERÁ ABERTA*`,
+"",
+"Verifiquei em sistema que existe uma ordem de serviço em aberta para o técnico estar indo ao local, mas a empresa dispõe do prazo de 24 horas úteis a partir da data e hora em que foi aberto a ordem de serviço para efetuar esse atendimento. No caso horas úteis conta das 9hrs da manhã até as 18hrs de segunda a sexta. Trabalhamos nos finais de semana, mas com uma equipe reduzida. Nesse caso, somente estar aguardando. Referente ao meu atendimento, ajudo em algo mais?",
+"",
+`Sua ordem de serviço já se encontra com nossa equipe técnica, é só aguardar. A empresa dispõe do prazo máximo de 24 horas úteis (aproximadamente dois dias e meios, não sendo contabilizados finais de semana e/ou feriados) a partir da data e hora em que foi aberto a ordem de serviço para efetuar esse atendimento, contudo nossa equipe técnica faz o máximo para realizar esse atendimento o mais rápido possível.
+Numero do Protocolo de solicitação:`
+],
+
+rota: [
+"Pedimos desculpas pelo transtorno. No momento estamos com uma aparente indisponibilidade no local, nossa equipe está tomando todas as medidas cabíveis para normalizar a conexão. O prazo para normalização no momento é até o fim do dia, porém não se prenda a este prazo, somente aguardar com o equipamento ligado que a conexão retornará automaticamente após a indisponibilidade. Caso precise de uma nova informação, somente nos enviar uma nova mensagem. Ajudo em algo mais?"
+],
+
+procedimentos: [
+`Vou realizar alguns procedimentos em sistema
+Poderia por gentileza retirar seu roteador da tomada, aguardar de 15s segundos e ligar novamente?
+Apôs isso, Verifica se normalizou por gentileza. Assim que verificar me avisa.`,
+"",
+`Vou realizar algumas atualizações em sistema
+Poderia por gentileza retirar seu roteador da tomada, aguardar de 15s segundos e ligar novamente?
+Apôs isso, Verifica se normalizou por gentileza. Assim que verificar me avisa.`
+],
+
+fidelidade: [
+"Obrigado por aguardar, sua fidelidade foi renovada, A partir de 2026, a fidelidade será renovada automaticamente após cada ciclo de 12 meses. Caso deseje cancelar o plano sem pagar a taxa de quebra de contrato, é necessário entrar em contato com até 30 dias de antecedência da renovação e solicitar o cancelamento da fidelidade. Após o término dos 12 meses, você poderá encerrar o contrato sem custos adicionais.",
+"",
+"Já foi realizado o pedido pro setor responsável o ajuste da sua fatura atual, seria somente aguardar o ajuste, caso chegue perto do dia de vencimento e o valor permanecer, peço para que entre em contato diretamente com o setor financeiro."
+],
+
+encerramento: [
+"A Alternativa Internet agradece seu contato e deseja um excelente dia, nosso suporte funciona 24horas, a qualquer momento que apresentar algum tipo de problema, entre em contato e inicie um novo atendimento, por favor.",
+"",
+"Devido à falta de retorno estaremos encerrando este contato. Nosso suporte funciona 24horas, a qualquer momento que apresentar algum tipo de problema, entre em contato e inicie um novo atendimento, por favor. A Alternativa Internet agradece seu contato, e deseja um excelente dia."
+],
+
+senha: [
+"Não conseguimos ter acesso ao seu roteador pelo sistema, nesse caso, posso solicitar uma vista técnica para mudar a senha, só que seria cobrado um valor de R$20,00 peal visita, pode comparecer na recepção da sua localidade com o seu roteador em mãos para mudar a senha e seria cobrado um valor de R$10,00 pra troca de senha, ou pode tentar trocar a senha em casa assistindo um tutorial no youtube, só pesquisar pela marca do seu roteador, e eu te passo o login PPOE e a senha para realizar a troca."
+]
+
+};
 
 /* CONFIG */
 
@@ -640,6 +1382,12 @@ tipo === "os" ? "block" : "none";
 document.getElementById("paginaRota").style.display =
 tipo === "rota" ? "block" : "none";
 
+document.getElementById("paginaTransferencia").style.display =
+tipo === "transferencia" ? "block" : "none";
+
+document.getElementById("paginaScripts").style.display =
+tipo === "scripts" ? "block" : "none";
+
 document.querySelectorAll(".aba").forEach(btn=>{
     btn.classList.remove("ativa");
 });
@@ -647,6 +1395,14 @@ document.querySelectorAll(".aba").forEach(btn=>{
 event.target.classList.add("ativa");
 
 }
+
+trocarAba('scripts', {target: document.querySelector('.aba.ativa')});
+
+setTimeout(()=>{
+    const seletor = document.getElementById("seletorPeriodo");
+    if(seletor) seletor.style.display = "block";
+    inicializarPeriodoAutomatico();
+}, 100);
 
 /* O.S */
 
@@ -667,6 +1423,40 @@ return `${os.contrato} - ${os.codigoProblema} - ${os.pop}`;
 }
 
 function salvarOS(){
+
+const problema = document.getElementById("problema");
+const disp = document.getElementById("disp");
+const ref = document.getElementById("ref");
+const ultima = document.getElementById("ultima");
+const whatsapp = document.getElementById("whatsapp");
+const contrato = document.getElementById("contrato");
+const codigoProblema = document.getElementById("codigoProblema");
+const pop = document.getElementById("pop");
+
+if(editandoOS){
+
+ordens = ordens.map(os=>{
+    if(os.id === editandoOS){
+        os.problema = problema.value;
+        os.disp = disp.value;
+        os.ref = ref.value;
+        os.ultima = ultima.value;
+        os.whatsapp = whatsapp.value;
+        os.contrato = contrato.value;
+        os.codigoProblema = codigoProblema.value;
+        os.pop = pop.value.toUpperCase();
+    }
+    return os;
+});
+
+localStorage.setItem("ordens", JSON.stringify(ordens));
+
+renderizarOS();
+
+limparOS();
+
+return;
+}
 
 const nova = {
 
@@ -698,15 +1488,51 @@ limparOS();
 
 function limparOS(){
 
-problema.value="";
-disp.value="";
-ref.value="";
-ultima.value="";
-whatsapp.value="";
+document.getElementById("problema").value="";
+document.getElementById("disp").value="";
+document.getElementById("ref").value="";
+document.getElementById("ultima").value="";
+document.getElementById("whatsapp").value="";
+document.getElementById("contrato").value="";
+document.getElementById("codigoProblema").value="";
+document.getElementById("pop").value="";
 
-contrato.value="";
-codigoProblema.value="";
-pop.value="";
+cancelarEdicaoOS();
+
+}
+
+function editarOS(id){
+
+const os = ordens.find(o=>o.id === id);
+
+if(!os) return;
+
+document.getElementById("problema").value = os.problema || "";
+document.getElementById("disp").value = os.disp || "";
+document.getElementById("ref").value = os.ref || "";
+document.getElementById("ultima").value = os.ultima || "";
+document.getElementById("whatsapp").value = os.whatsapp || "";
+document.getElementById("contrato").value = os.contrato || "";
+document.getElementById("codigoProblema").value = os.codigoProblema || "";
+document.getElementById("pop").value = os.pop || "";
+
+editandoOS = id;
+
+document.getElementById("tituloOS").textContent = "Editar O.S.";
+document.getElementById("btnCancelarOS").style.display = "inline-block";
+
+window.scrollTo({top:0, behavior:'smooth'});
+
+}
+
+function cancelarEdicaoOS(){
+
+editandoOS = null;
+
+document.getElementById("tituloOS").textContent = "Nova O.S.";
+document.getElementById("btnCancelarOS").style.display = "none";
+
+limparOS();
 
 }
 
@@ -742,7 +1568,7 @@ renderizarOS();
 
 }
 
-function limparLancadas(){
+function limparLancadasOS(){
 
 const confirmar = confirm(
 "Deseja remover todas as O.S. lançadas?"
@@ -763,6 +1589,8 @@ renderizarOS();
 }
 
 function renderizarOS(){
+
+const listaOS = document.getElementById("listaOS");
 
 listaOS.innerHTML="";
 
@@ -872,6 +1700,11 @@ onclick="copiarTexto(\`${gerarAvisoDiscord(os)}\`)">
 📢 Copiar Chamado
 </button>
 
+<button class="btn-editar"
+onclick="editarOS(${os.id})">
+✏️ Editar
+</button>
+
 <button class="btn-excluir"
 onclick="excluirOS(${os.id})">
 🗑 Excluir
@@ -921,6 +1754,37 @@ ${r.tipo}`;
 
 function salvarRota(){
 
+const cidade = document.getElementById("cidade");
+const rua = document.getElementById("rua");
+const bairro = document.getElementById("bairro");
+const vlan = document.getElementById("vlan");
+const queda = document.getElementById("queda");
+const clienteid = document.getElementById("clienteid");
+
+if(editandoRota){
+
+rotas = rotas.map(r=>{
+    if(r.id === editandoRota){
+        r.cidade = cidade.value;
+        r.rua = rua.value;
+        r.bairro = bairro.value;
+        r.vlan = vlan.value;
+        r.queda = queda.value;
+        r.clienteid = clienteid.value;
+        r.tipo = document.querySelector('input[name="tipoCliente"]:checked').value;
+    }
+    return r;
+});
+
+localStorage.setItem("rotas", JSON.stringify(rotas));
+
+renderizarRotas();
+
+limparRota();
+
+return;
+}
+
 const nova = {
 
 id:Date.now(),
@@ -932,7 +1796,9 @@ vlan:vlan.value,
 queda:queda.value,
 clienteid:clienteid.value,
 
-tipo:document.querySelector('input[name="tipoCliente"]:checked').value
+tipo:document.querySelector('input[name="tipoCliente"]:checked').value,
+
+status:"PENDENTE"
 
 };
 
@@ -948,24 +1814,174 @@ limparRota();
 
 function limparRota(){
 
-cidade.value="";
-rua.value="";
-bairro.value="";
-vlan.value="";
-queda.value="";
-clienteid.value="";
+document.getElementById("cidade").value="";
+document.getElementById("rua").value="";
+document.getElementById("bairro").value="";
+document.getElementById("vlan").value="";
+document.getElementById("queda").value="";
+document.getElementById("clienteid").value="";
+
+cancelarEdicaoRota();
+
+}
+
+function editarRota(id){
+
+const rota = rotas.find(r=>r.id === id);
+
+if(!rota) return;
+
+document.getElementById("cidade").value = rota.cidade || "";
+document.getElementById("rua").value = rota.rua || "";
+document.getElementById("bairro").value = rota.bairro || "";
+document.getElementById("vlan").value = rota.vlan || "";
+document.getElementById("queda").value = rota.queda || "";
+document.getElementById("clienteid").value = rota.clienteid || "";
+
+const radioTipo = document.querySelector(`input[name="tipoCliente"][value="${rota.tipo}"]`);
+if(radioTipo) radioTipo.checked = true;
+
+editandoRota = id;
+
+document.getElementById("tituloRota").textContent = "Editar Rota Down";
+document.getElementById("btnCancelarRota").style.display = "inline-block";
+
+window.scrollTo({top:0, behavior:'smooth'});
+
+}
+
+function cancelarEdicaoRota(){
+
+editandoRota = null;
+
+document.getElementById("tituloRota").textContent = "Nova Rota Down";
+document.getElementById("btnCancelarRota").style.display = "none";
+
+limparRota();
+
+}
+
+function alterarStatusRota(id, status){
+
+rotas = rotas.map(r=>{
+
+if(r.id === id){
+r.status = status;
+}
+
+return r;
+
+});
+
+rotas.sort((a,b)=>{
+
+if(a.status === "PENDENTE" && b.status === "LANÇADA"){
+    return -1;
+}
+
+if(a.status === "LANÇADA" && b.status === "PENDENTE"){
+    return 1;
+}
+
+return b.id - a.id;
+
+});
+
+localStorage.setItem(
+"rotas",
+JSON.stringify(rotas)
+);
+
+renderizarRotas();
+
+}
+
+function limparLancadasRotas(){
+
+const confirmar = confirm(
+"Deseja remover todas as rotas lançadas?"
+);
+
+if(!confirmar){
+    return;
+}
+
+rotas = rotas.filter(r =>
+r.status !== "LANÇADA"
+);
+
+localStorage.setItem("rotas", JSON.stringify(rotas));
+
+renderizarRotas();
 
 }
 
 function renderizarRotas(){
 
+const listaRotas = document.getElementById("listaRotas");
+
 listaRotas.innerHTML="";
+
+let pendentes = 0;
+let lancadas = 0;
 
 rotas.forEach(r=>{
 
+if(r.status === "PENDENTE"){
+    pendentes++;
+}
+
+if(r.status === "LANÇADA"){
+    lancadas++;
+}
+
+let classeStatus = "";
+
+if(r.status === "PENDENTE"){
+    classeStatus = "status-pendente";
+}
+
+if(r.status === "LANÇADA"){
+    classeStatus = "status-lancada";
+}
+
 listaRotas.innerHTML += `
 
-<div class="item status-pendente">
+<div class="item ${classeStatus}">
+
+<div class="item-topo">
+
+<div class="info-esquerda">
+
+<div class="badge-id">
+#${r.clienteid || "SEM ID"}
+</div>
+
+<div class="status-box">
+
+<input
+type="checkbox"
+${r.status === "PENDENTE" ? "checked" : ""}
+onclick="alterarStatusRota(${r.id}, 'PENDENTE')">
+
+<label>PENDENTE</label>
+
+</div>
+
+<div class="status-box">
+
+<input
+type="checkbox"
+${r.status === "LANÇADA" ? "checked" : ""}
+onclick="alterarStatusRota(${r.id}, 'LANÇADA')">
+
+<label>LANÇADA</label>
+
+</div>
+
+</div>
+
+</div>
 
 <textarea readonly>${gerarTextoRota(r)}</textarea>
 
@@ -974,6 +1990,11 @@ listaRotas.innerHTML += `
 <button class="btn-copiar"
 onclick="copiarTexto(\`${gerarTextoRota(r)}\`)">
 📋 Copiar
+</button>
+
+<button class="btn-editar"
+onclick="editarRota(${r.id})">
+✏️ Editar
 </button>
 
 <button class="btn-excluir"
@@ -989,6 +2010,13 @@ onclick="excluirRota(${r.id})">
 
 });
 
+document.getElementById("contadorRotas").innerHTML = `
+
+<span>🟡 Pendentes: ${pendentes}</span>
+<span>🟢 Lançadas: ${lancadas}</span>
+
+`;
+
 }
 
 function excluirRota(id){
@@ -1001,6 +2029,349 @@ renderizarRotas();
 
 }
 
+/* TRANSFERÊNCIAS */
+
+function gerarTextoTransferencia(t){
+
+return `TRANSFERÊNCIA DE ENDEREÇO -> ${t.tipo}
+ENDEREÇO ANTIGO: ${t.enderecoAntigo}
+ENDEREÇO NOVO: ${t.enderecoNovo}
+DATA: ${t.data}
+PERÍODO: (${t.periodo === "INTEGRAL" ? "X" : " "}) INTEGRAL (${t.periodo === "MANHÃ" ? "X" : " "}) MANHÃ (${t.periodo === "TARDE" ? "X" : " "}) TARDE
+CABO REAPROVEITADO: (${t.cabo === "NÃO" ? "X" : " "}) NÃO (${t.cabo === "SIM" ? "X" : " "}) SIM
+JÁ POSSUI ONU (${t.onu === "SIM" ? "X" : " "}) SIM (${t.onu === "NÃO" ? "X" : " "}) NÃO
+VALOR A SER PAGO: R$ ${t.valor} (${t.pagamento === "PIX" ? "X" : " "}) PIX (${t.pagamento === "À VISTA" ? "X" : " "}) A VISTA (${t.pagamento === "CARTÃO" ? "X" : " "}) CARTÃO
+INFORMAÇÕES ADICIONAIS: - Cliente ciente dos valores a serem pagos. - Para a ativação do serviço somente o titular deverá receber a equipe sendo necessário apresentar aos técnicos documento original do RG e CPF do titular. - Para velocidade acima de 100 MB, é necessário possuir equipamentos adequados para fazer teste de velocidade: Ou roteador Ac 2.4/5.8ghz, com Porta Wan 10/100/1000, e Porta Lan 10/100/1000 e ainda celular/tablet/pc/notebook com Wi-Fi 5,8 Ghz.`;
+
+}
+
+function salvarTransferencia(){
+
+if(editandoTransferencia){
+
+transferencias = transferencias.map(t=>{
+    if(t.id === editandoTransferencia){
+        t.contrato = document.getElementById("tContrato").value;
+        t.tipo = document.querySelector('input[name="tipoTransferencia"]:checked').value;
+        t.enderecoAntigo = document.getElementById("tEnderecoAntigo").value;
+        t.enderecoNovo = document.getElementById("tEnderecoNovo").value;
+        t.data = document.getElementById("tData").value;
+        t.periodo = document.querySelector('input[name="tPeriodo"]:checked').value;
+        t.cabo = document.querySelector('input[name="tCabo"]:checked').value;
+        t.onu = document.querySelector('input[name="tONU"]:checked').value;
+        t.valor = document.getElementById("tValor").value;
+        t.pagamento = document.querySelector('input[name="tPagamento"]:checked').value;
+    }
+    return t;
+});
+
+localStorage.setItem(
+"transferencias",
+JSON.stringify(transferencias)
+);
+
+renderizarTransferencias();
+
+limparTransferencia();
+
+return;
+}
+
+const nova = {
+
+id: Date.now(),
+
+contrato: document.getElementById("tContrato").value,
+
+tipo: document.querySelector(
+'input[name="tipoTransferencia"]:checked'
+).value,
+
+enderecoAntigo: document.getElementById("tEnderecoAntigo").value,
+
+enderecoNovo: document.getElementById("tEnderecoNovo").value,
+
+data: document.getElementById("tData").value,
+
+periodo: document.querySelector(
+'input[name="tPeriodo"]:checked'
+).value,
+
+cabo: document.querySelector(
+'input[name="tCabo"]:checked'
+).value,
+
+onu: document.querySelector(
+'input[name="tONU"]:checked'
+).value,
+
+valor: document.getElementById("tValor").value,
+
+pagamento: document.querySelector(
+'input[name="tPagamento"]:checked'
+).value,
+
+status:"PENDENTE"
+
+};
+
+transferencias.unshift(nova);
+
+localStorage.setItem(
+"transferencias",
+JSON.stringify(transferencias)
+);
+
+renderizarTransferencias();
+
+limparTransferencia();
+
+}
+
+function limparTransferencia(){
+
+document.getElementById("tContrato").value = "";
+document.getElementById("tEnderecoAntigo").value = "";
+document.getElementById("tEnderecoNovo").value = "";
+document.getElementById("tData").value = "";
+document.getElementById("tValor").value = "";
+
+document.querySelector('input[name="tipoTransferencia"][value="FTTH"]').checked = true;
+
+document.querySelector('input[name="tPeriodo"][value="INTEGRAL"]').checked = true;
+
+document.querySelector('input[name="tCabo"][value="NÃO"]').checked = true;
+
+document.querySelector('input[name="tONU"][value="NÃO"]').checked = true;
+
+document.querySelector('input[name="tPagamento"][value="PIX"]').checked = true;
+
+cancelarEdicaoTransferencia();
+
+}
+
+function editarTransferencia(id){
+
+const transferencia = transferencias.find(t=>t.id === id);
+
+if(!transferencia) return;
+
+document.getElementById("tContrato").value = transferencia.contrato || "";
+document.getElementById("tEnderecoAntigo").value = transferencia.enderecoAntigo || "";
+document.getElementById("tEnderecoNovo").value = transferencia.enderecoNovo || "";
+document.getElementById("tData").value = transferencia.data || "";
+document.getElementById("tValor").value = transferencia.valor || "";
+
+const radioTipo = document.querySelector(`input[name="tipoTransferencia"][value="${transferencia.tipo}"]`);
+if(radioTipo) radioTipo.checked = true;
+
+const radioPeriodo = document.querySelector(`input[name="tPeriodo"][value="${transferencia.periodo}"]`);
+if(radioPeriodo) radioPeriodo.checked = true;
+
+const radioCabo = document.querySelector(`input[name="tCabo"][value="${transferencia.cabo}"]`);
+if(radioCabo) radioCabo.checked = true;
+
+const radioONU = document.querySelector(`input[name="tONU"][value="${transferencia.onu}"]`);
+if(radioONU) radioONU.checked = true;
+
+const radioPagamento = document.querySelector(`input[name="tPagamento"][value="${transferencia.pagamento}"]`);
+if(radioPagamento) radioPagamento.checked = true;
+
+editandoTransferencia = id;
+
+document.getElementById("tituloTransferencia").textContent = "Editar Transferência";
+document.getElementById("btnCancelarTransferencia").style.display = "inline-block";
+
+window.scrollTo({top:0, behavior:'smooth'});
+
+}
+
+function cancelarEdicaoTransferencia(){
+
+editandoTransferencia = null;
+
+document.getElementById("tituloTransferencia").textContent = "Nova Transferência";
+document.getElementById("btnCancelarTransferencia").style.display = "none";
+
+limparTransferencia();
+
+}
+
+function alterarStatusTransferencia(id, status){
+
+transferencias = transferencias.map(t=>{
+
+if(t.id === id){
+t.status = status;
+}
+
+return t;
+
+});
+
+transferencias.sort((a,b)=>{
+
+if(a.status === "PENDENTE" && b.status === "LANÇADA"){
+    return -1;
+}
+
+if(a.status === "LANÇADA" && b.status === "PENDENTE"){
+    return 1;
+}
+
+return b.id - a.id;
+
+});
+
+localStorage.setItem(
+"transferencias",
+JSON.stringify(transferencias)
+);
+
+renderizarTransferencias();
+
+}
+
+function limparLancadasTransferencias(){
+
+const confirmar = confirm(
+"Deseja remover todas as transferências lançadas?"
+);
+
+if(!confirmar){
+    return;
+}
+
+transferencias = transferencias.filter(t =>
+t.status !== "LANÇADA"
+);
+
+localStorage.setItem("transferencias", JSON.stringify(transferencias));
+
+renderizarTransferencias();
+
+}
+
+function renderizarTransferencias(){
+
+const lista = document.getElementById("listaTransferencias");
+
+if(!lista) return;
+
+lista.innerHTML = "";
+
+let pendentes = 0;
+let lancadas = 0;
+
+transferencias.forEach(t => {
+
+if(t.status === "PENDENTE"){
+    pendentes++;
+}
+
+if(t.status === "LANÇADA"){
+    lancadas++;
+}
+
+let classeStatus = "";
+
+if(t.status === "PENDENTE"){
+    classeStatus = "status-pendente";
+}
+
+if(t.status === "LANÇADA"){
+    classeStatus = "status-lancada";
+}
+
+lista.innerHTML += `
+
+<div class="item ${classeStatus}">
+
+<div class="item-topo">
+
+<div class="info-esquerda">
+
+<div class="badge-id">
+#${t.contrato || "SEM ID"}
+</div>
+
+<div class="status-box">
+
+<input
+type="checkbox"
+${t.status === "PENDENTE" ? "checked" : ""}
+onclick="alterarStatusTransferencia(${t.id}, 'PENDENTE')">
+
+<label>PENDENTE</label>
+
+</div>
+
+<div class="status-box">
+
+<input
+type="checkbox"
+${t.status === "LANÇADA" ? "checked" : ""}
+onclick="alterarStatusTransferencia(${t.id}, 'LANÇADA')">
+
+<label>LANÇADA</label>
+
+</div>
+
+</div>
+
+</div>
+
+<textarea readonly>${gerarTextoTransferencia(t)}</textarea>
+
+<div class="acoes">
+
+<button class="btn-copiar"
+onclick="copiarTexto(\`${gerarTextoTransferencia(t)}\`)">
+📋 Copiar
+</button>
+
+<button class="btn-editar"
+onclick="editarTransferencia(${t.id})">
+✏️ Editar
+</button>
+
+<button class="btn-excluir"
+onclick="excluirTransferencia(${t.id})">
+🗑 Excluir
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("contadorTransferencias").innerHTML = `
+
+<span>🟡 Pendentes: ${pendentes}</span>
+<span>🟢 Lançadas: ${lancadas}</span>
+
+`;
+
+}
+
+function excluirTransferencia(id){
+
+transferencias = transferencias.filter(
+t => t.id !== id
+);
+
+localStorage.setItem(
+"transferencias",
+JSON.stringify(transferencias)
+);
+
+renderizarTransferencias();
+
+}
+
 function copiarTexto(texto){
 
 navigator.clipboard.writeText(texto);
@@ -1009,8 +2380,339 @@ alert("Copiado!");
 
 }
 
+/* SCRIPTS DE ATENDIMENTO */
+
+function trocarCategoriaScript(categoria, event){
+
+categoriaScriptAtual = categoria;
+
+renderizarAbasScripts();
+renderizarScripts();
+
+}
+
+function filtrarScripts(){
+
+renderizarScripts();
+
+}
+
+function mudarPeriodo(valor){
+
+const periodoMap = {
+    "dia": "Bom dia",
+    "tarde": "Boa tarde",
+    "noite": "Boa noite"
+};
+
+periodoDia = periodoMap[valor] || valor;
+
+renderizarScripts();
+
+}
+
+function inicializarPeriodoAutomatico(){
+
+const periodoDetectado = detectarPeriodoAutomatico();
+
+const radio = document.querySelector(`input[name="periodoDia"][value="${periodoDetectado}"]`);
+if(radio) radio.checked = true;
+
+mudarPeriodo(periodoDetectado);
+
+}
+
+function copiarScript(texto, btn){
+
+navigator.clipboard.writeText(texto);
+
+const textoOriginal = btn.textContent;
+
+btn.textContent = "Copiado ✔";
+btn.classList.add("copiado");
+
+setTimeout(()=>{
+    btn.textContent = textoOriginal;
+    btn.classList.remove("copiado");
+}, 2000);
+
+}
+
+function renderizarAbasScripts(){
+
+const abas = document.getElementById("abasScripts");
+const select = document.getElementById("novaCategoriaScript");
+
+if(!abas || !select) return;
+
+abas.innerHTML = "";
+select.innerHTML = "";
+
+categoriasScripts.forEach(cat=>{
+
+abas.innerHTML += `
+
+<button class="aba-script ${categoriaScriptAtual === cat.id ? 'ativa' : ''}" onclick="trocarCategoriaScript('${cat.id}', event)">
+${cat.icone} ${cat.nome}
+</button>
+
+`;
+
+select.innerHTML += `<option value="${cat.id}">${cat.icone} ${cat.nome}</option>`;
+
+const editarSelect = document.getElementById("editarCategoriaSelect");
+const excluirSelect = document.getElementById("excluirCategoriaSelect");
+
+if(editarSelect && excluirSelect){
+    editarSelect.innerHTML = `<option value="">Selecione uma categoria...</option>`;
+    excluirSelect.innerHTML = `<option value="">Selecione uma categoria...</option>`;
+    
+    categoriasScripts.forEach(cat=>{
+        editarSelect.innerHTML += `<option value="${cat.id}">${cat.icone} ${cat.nome}</option>`;
+        excluirSelect.innerHTML += `<option value="${cat.id}">${cat.icone} ${cat.nome}</option>`;
+    });
+}
+
+});
+
+}
+
+function renderizarScripts(){
+
+const lista = document.getElementById("listaScripts");
+const seletorPeriodo = document.getElementById("seletorPeriodo");
+
+if(!lista) return;
+
+seletorPeriodo.style.display = "block";
+
+lista.innerHTML = "";
+
+const pesquisa = document
+.getElementById("pesquisaScripts")
+.value
+.toString()
+.toLowerCase()
+.trim();
+
+const scripts = scriptsDeAtendimento[categoriaScriptAtual] || [];
+
+scripts
+.filter(script=>{
+    let textoParaFiltrar = script.replace("PERIODO", periodoDia);
+    return textoParaFiltrar.toLowerCase().includes(pesquisa);
+})
+.forEach((script, index)=>{
+
+let textoExibir = script.replace("PERIODO", periodoDia);
+
+if(textoExibir.trim() === ""){
+    lista.innerHTML += `<div class="script-item" style="padding:8px;"><hr style="border-color:#262626;"></div>`;
+    return;
+}
+
+lista.innerHTML += `
+
+<div class="script-item">
+
+<div class="script-text">${textoExibir.replace(/\n/g, "<br>")}</div>
+
+<button class="script-btn" onclick="copiarScript(\`${textoExibir.replace(/`/g, "\\`").replace(/\n/g, "\\n")}\`, this)">
+📋 Copiar Script
+</button>
+
+<div class="script-acoes">
+
+<button class="btn-editar-script" onclick="editarScript(${index})">
+✏️ Editar
+</button>
+
+<button class="btn-excluir-script" onclick="excluirScript(${index})">
+🗑 Excluir
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+if(lista.innerHTML === ""){
+    lista.innerHTML = "<p style='text-align:center; color:#666; padding:20px;'>Nenhum script encontrado.</p>";
+}
+
+}
+
+function adicionarScript(){
+
+const categoria = document.getElementById("novaCategoriaScript").value;
+const texto = document.getElementById("novoScriptTexto").value.trim();
+
+if(!texto){
+    alert("Por favor, digite o texto do script.");
+    return;
+}
+
+if(!categoria){
+    alert("Por favor, selecione uma categoria.");
+    return;
+}
+
+if(editandoScript !== null){
+    scriptsDeAtendimento[categoria][editandoScript] = texto;
+    editandoScript = null;
+    document.querySelector(".salvar").textContent = "➕ Adicionar Script";
+}else{
+    scriptsDeAtendimento[categoria].push(texto);
+}
+
+localStorage.setItem("scriptsDeAtendimento", JSON.stringify(scriptsDeAtendimento));
+
+document.getElementById("novoScriptTexto").value = "";
+
+renderizarScripts();
+
+}
+
+function editarScript(index){
+
+const script = scriptsDeAtendimento[categoriaScriptAtual][index];
+
+document.getElementById("novaCategoriaScript").value = categoriaScriptAtual;
+document.getElementById("novoScriptTexto").value = script;
+
+editandoScript = index;
+
+document.querySelector(".salvar").textContent = "💾 Salvar Alterações";
+
+window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
+
+}
+
+function excluirScript(index){
+
+if(!confirm("Tem certeza que deseja excluir este script?")){
+    return;
+}
+
+scriptsDeAtendimento[categoriaScriptAtual].splice(index, 1);
+
+localStorage.setItem("scriptsDeAtendimento", JSON.stringify(scriptsDeAtendimento));
+
+renderizarScripts();
+
+}
+
+function adicionarCategoria(){
+
+const nome = document.getElementById("novaCategoriaNome").value.trim();
+const icone = document.getElementById("novaCategoriaIcone").value.trim() || "📋";
+
+if(!nome){
+    alert("Por favor, digite o nome da categoria.");
+    return;
+}
+
+const id = nome.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+
+if(categoriasScripts.find(c=>c.id === id)){
+    alert("Já existe uma categoria com este nome.");
+    return;
+}
+
+if(editandoCategoria !== null){
+    const cat = categoriasScripts.find(c=>c.id === editandoCategoria);
+    if(cat){
+        const oldId = cat.id;
+        cat.nome = nome;
+        cat.icone = icone;
+        cat.id = id;
+        
+        if(oldId !== id){
+            scriptsDeAtendimento[id] = scriptsDeAtendimento[oldId] || [];
+            delete scriptsDeAtendimento[oldId];
+        }
+    }
+    editandoCategoria = null;
+    document.querySelector(".salvar").textContent = "➕ Adicionar Categoria";
+}else{
+    categoriasScripts.push({id, nome, icone});
+    scriptsDeAtendimento[id] = [];
+}
+
+localStorage.setItem("categoriasScripts", JSON.stringify(categoriasScripts));
+localStorage.setItem("scriptsDeAtendimento", JSON.stringify(scriptsDeAtendimento));
+
+document.getElementById("novaCategoriaNome").value = "";
+document.getElementById("novaCategoriaIcone").value = "";
+
+renderizarAbasScripts();
+renderizarScripts();
+
+}
+
+function carregarCategoriaParaEdicao(){
+
+const id = document.getElementById("editarCategoriaSelect").value;
+
+if(!id){
+    alert("Por favor, selecione uma categoria para editar.");
+    return;
+}
+
+const cat = categoriasScripts.find(c=>c.id === id);
+
+if(!cat) return;
+
+document.getElementById("novaCategoriaNome").value = cat.nome;
+document.getElementById("novaCategoriaIcone").value = cat.icone;
+
+editandoCategoria = id;
+
+document.querySelector(".salvar").textContent = "💾 Salvar Alterações";
+
+window.scrollTo({top:document.body.scrollHeight, behavior:'smooth'});
+
+}
+
+function excluirCategoriaSelecionada(){
+
+const id = document.getElementById("excluirCategoriaSelect").value;
+
+if(!id){
+    alert("Por favor, selecione uma categoria para excluir.");
+    return;
+}
+
+if(!confirm("Tem certeza que deseja excluir esta categoria e todos os scripts dela?")){
+    return;
+}
+
+categoriasScripts = categoriasScripts.filter(c=>c.id !== id);
+delete scriptsDeAtendimento[id];
+
+if(categoriaScriptAtual === id){
+    categoriaScriptAtual = categoriasScripts[0]?.id || "";
+}
+
+localStorage.setItem("categoriasScripts", JSON.stringify(categoriasScripts));
+localStorage.setItem("scriptsDeAtendimento", JSON.stringify(scriptsDeAtendimento));
+
+renderizarAbasScripts();
+renderizarScripts();
+
+}
+
+
+aplicarPersonalizacao();
+
 renderizarOS();
 renderizarRotas();
+renderizarTransferencias();
+renderizarAbasScripts();
+renderizarScripts();
 
 </script>
 
