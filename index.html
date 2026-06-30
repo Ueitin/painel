@@ -7,6 +7,9 @@
 
 <title>Painel</title>
 
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
 <style>
 
 :root{
@@ -570,6 +573,10 @@ textarea{
 🎨 Personalizar
 </button>
 
+<button onclick="abrirConfigNuvem()">
+☁️ Sincronização
+</button>
+
 </div>
 
 </div>
@@ -978,6 +985,70 @@ title="Limpar lançadas">
 
 </div>
 
+<!-- CONFIGURAÇÃO NUVEM -->
+
+<div id="modalConfigNuvem" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; justify-content:center; align-items:center;">
+
+<div class="card" style="max-width:500px; width:90%; max-height:90vh; overflow-y:auto;">
+
+<h2>☁️ Sincronização em Nuvem</h2>
+
+<div class="campo">
+
+<label>API Key do Firebase</label>
+
+<input type="password" id="firebaseApiKey" placeholder="AIza...">
+
+</div>
+
+<div class="campo">
+
+<label>Project ID do Firebase</label>
+
+<input type="text" id="firebaseProjectId" placeholder="seu-projeto-firebase">
+
+</div>
+
+<div class="campo">
+
+<label>Database URL do Firebase</label>
+
+<input type="text" id="firebaseDatabaseUrl" placeholder="https://seu-projeto.firebaseio.com">
+
+</div>
+
+<div class="campo">
+
+<label>Usuário (identificador único)</label>
+
+<input type="text" id="firebaseUserId" placeholder="Ex: welington-noc">
+
+</div>
+
+<div class="campo">
+
+<label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+
+<input type="checkbox" id="firebaseSyncEnabled" onchange="toggleSync()" style="width:auto;">
+
+Ativar Sincronização
+
+</label>
+
+</div>
+
+<button class="salvar" onclick="salvarConfigNuvem()">
+💾 Salvar Configuração
+</button>
+
+<button class="limpar" onclick="fecharConfigNuvem()">
+✖ Fechar
+</button>
+
+</div>
+
+</div>
+
 <!-- PERSONALIZAÇÃO -->
 
 <div id="modalPersonalizacao" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; justify-content:center; align-items:center;">
@@ -1200,66 +1271,16 @@ let personalizacao = JSON.parse(localStorage.getItem("personalizacao")) || {
     corFundo: "#151515"
 };
 
-function detectarPeriodoAutomatico(){
+let firebaseConfig = JSON.parse(localStorage.getItem("firebaseConfig")) || {
+    apiKey: "",
+    projectId: "",
+    databaseURL: "",
+    userId: "",
+    syncEnabled: false
+};
 
-const hora = new Date().getHours();
-
-if(hora >= 5 && hora < 12){
-    return "dia";
-}else if(hora >= 12 && hora < 18){
-    return "tarde";
-}else{
-    return "noite";
-}
-
-}
-
-/* FUNÇÕES PERSONALIZAÇÃO */
-
-function abrirPersonalizacao(){
-
-document.getElementById("corDestaqueCustom").value = personalizacao.corDestaque;
-document.getElementById("corFundoCustom").value = personalizacao.corFundo;
-
-document.getElementById("modalPersonalizacao").style.display = "flex";
-
-}
-
-function fecharPersonalizacao(){
-
-document.getElementById("modalPersonalizacao").style.display = "none";
-
-}
-
-function setCorDestaque(cor){
-
-personalizacao.corDestaque = cor;
-aplicarPersonalizacao();
-
-}
-
-function setCorFundo(cor){
-
-personalizacao.corFundo = cor;
-aplicarPersonalizacao();
-
-}
-
-function salvarPersonalizacao(){
-
-localStorage.setItem("personalizacao", JSON.stringify(personalizacao));
-
-alert("Personalização salva!");
-fecharPersonalizacao();
-
-}
-
-function aplicarPersonalizacao(){
-
-document.documentElement.style.setProperty("--cor-destaque", personalizacao.corDestaque);
-document.documentElement.style.setProperty("--cor-fundo", personalizacao.corFundo);
-
-}
+let db = null;
+let dbRef = null;
 
 let editandoScript = null;
 
@@ -1271,9 +1292,7 @@ let categoriasScripts = JSON.parse(localStorage.getItem("categoriasScripts")) ||
 {id:"visita", nome:"Visita Técnica", icone:"🏠"},
 {id:"rota", nome:"Rota / Indisponibilidade", icone:"🛣️"},
 {id:"procedimentos", nome:"Procedimentos", icone:"⚙️"},
-{id:"fidelidade", nome:"Fidelidade", icone:"💎"},
-{id:"encerramento", nome:"Encerramento", icone:"👋"},
-{id:"senha", nome:"Senha / Roteador", icone:"🔑"}
+{id:"fidelidade", nome:"Fidelidade", icone:"🔄"}
 ];
 
 let scriptsDeAtendimento = JSON.parse(localStorage.getItem("scriptsDeAtendimento")) || {
@@ -1326,20 +1345,220 @@ Apôs isso, Verifica se normalizou por gentileza. Assim que verificar me avisa.`
 fidelidade: [
 "Obrigado por aguardar, sua fidelidade foi renovada, A partir de 2026, a fidelidade será renovada automaticamente após cada ciclo de 12 meses. Caso deseje cancelar o plano sem pagar a taxa de quebra de contrato, é necessário entrar em contato com até 30 dias de antecedência da renovação e solicitar o cancelamento da fidelidade. Após o término dos 12 meses, você poderá encerrar o contrato sem custos adicionais.",
 "",
-"Já foi realizado o pedido pro setor responsável o ajuste da sua fatura atual, seria somente aguardar o ajuste, caso chegue perto do dia de vencimento e o valor permanecer, peço para que entre em contato diretamente com o setor financeiro."
-],
-
-encerramento: [
-"A Alternativa Internet agradece seu contato e deseja um excelente dia, nosso suporte funciona 24horas, a qualquer momento que apresentar algum tipo de problema, entre em contato e inicie um novo atendimento, por favor.",
-"",
-"Devido à falta de retorno estaremos encerrando este contato. Nosso suporte funciona 24horas, a qualquer momento que apresentar algum tipo de problema, entre em contato e inicie um novo atendimento, por favor. A Alternativa Internet agradece seu contato, e deseja um excelente dia."
-],
-
-senha: [
-"Não conseguimos ter acesso ao seu roteador pelo sistema, nesse caso, posso solicitar uma vista técnica para mudar a senha, só que seria cobrado um valor de R$20,00 peal visita, pode comparecer na recepção da sua localidade com o seu roteador em mãos para mudar a senha e seria cobrado um valor de R$10,00 pra troca de senha, ou pode tentar trocar a senha em casa assistindo um tutorial no youtube, só pesquisar pela marca do seu roteador, e eu te passo o login PPOE e a senha para realizar a troca."
+"Sua fidelidade foi renovada com sucesso! A partir de 2026, a renovação será automática a cada 12 meses. Caso queira cancelar sem multa, entre em contato até 30 dias antes da renovação."
 ]
 
 };
+
+function detectarPeriodoAutomatico(){
+
+const hora = new Date().getHours();
+
+if(hora >= 5 && hora < 12){
+    return "dia";
+}else if(hora >= 12 && hora < 18){
+    return "tarde";
+}else{
+    return "noite";
+}
+
+}
+
+/* FUNÇÕES PERSONALIZAÇÃO */
+
+function abrirPersonalizacao(){
+
+document.getElementById("corDestaqueCustom").value = personalizacao.corDestaque;
+document.getElementById("corFundoCustom").value = personalizacao.corFundo;
+
+document.getElementById("modalPersonalizacao").style.display = "flex";
+
+}
+
+function fecharPersonalizacao(){
+
+document.getElementById("modalPersonalizacao").style.display = "none";
+
+}
+
+function setCorDestaque(cor){
+
+personalizacao.corDestaque = cor;
+aplicarPersonalizacao();
+
+}
+
+function setCorFundo(cor){
+
+personalizacao.corFundo = cor;
+aplicarPersonalizacao();
+
+}
+
+function salvarPersonalizacao(){
+
+localStorage.setItem("personalizacao", JSON.stringify(personalizacao));
+
+enviarDadosParaNuvem();
+
+alert("Personalização salva!");
+fecharPersonalizacao();
+
+}
+
+function aplicarPersonalizacao(){
+
+document.documentElement.style.setProperty("--cor-destaque", personalizacao.corDestaque);
+document.documentElement.style.setProperty("--cor-fundo", personalizacao.corFundo);
+
+}
+
+/* FUNÇÕES SINCRONIZAÇÃO NUVEM */
+
+function abrirConfigNuvem(){
+
+document.getElementById("firebaseApiKey").value = firebaseConfig.apiKey;
+document.getElementById("firebaseProjectId").value = firebaseConfig.projectId;
+document.getElementById("firebaseDatabaseUrl").value = firebaseConfig.databaseURL;
+document.getElementById("firebaseUserId").value = firebaseConfig.userId;
+document.getElementById("firebaseSyncEnabled").checked = firebaseConfig.syncEnabled;
+
+document.getElementById("modalConfigNuvem").style.display = "flex";
+
+}
+
+function fecharConfigNuvem(){
+
+document.getElementById("modalConfigNuvem").style.display = "none";
+
+}
+
+function salvarConfigNuvem(){
+
+firebaseConfig.apiKey = document.getElementById("firebaseApiKey").value.trim();
+firebaseConfig.projectId = document.getElementById("firebaseProjectId").value.trim();
+firebaseConfig.databaseURL = document.getElementById("firebaseDatabaseUrl").value.trim();
+firebaseConfig.userId = document.getElementById("firebaseUserId").value.trim();
+firebaseConfig.syncEnabled = document.getElementById("firebaseSyncEnabled").checked;
+
+localStorage.setItem("firebaseConfig", JSON.stringify(firebaseConfig));
+
+if(firebaseConfig.syncEnabled && firebaseConfig.apiKey && firebaseConfig.projectId){
+    inicializarFirebase();
+}
+
+alert("Configuração salva!");
+fecharConfigNuvem();
+
+}
+
+function toggleSync(){
+
+const checkbox = document.getElementById("firebaseSyncEnabled");
+firebaseConfig.syncEnabled = checkbox.checked;
+
+if(checkbox.checked && firebaseConfig.apiKey && firebaseConfig.projectId){
+    inicializarFirebase();
+}else{
+    if(db){
+        db = null;
+        dbRef = null;
+    }
+}
+
+}
+
+function inicializarFirebase(){
+
+if(!firebaseConfig.apiKey || !firebaseConfig.projectId || !firebaseConfig.databaseURL){
+    alert("Configure as credenciais do Firebase primeiro.");
+    return;
+}
+
+try{
+    if(!firebase.apps.length){
+        firebase.initializeApp({
+            apiKey: firebaseConfig.apiKey,
+            authDomain: firebaseConfig.projectId + ".firebaseapp.com",
+            projectId: firebaseConfig.projectId,
+            databaseURL: firebaseConfig.databaseURL,
+            storageBucket: firebaseConfig.projectId + ".appspot.com"
+        });
+    }
+    
+    db = firebase.database();
+    dbRef = db.ref("painel-noc/" + firebaseConfig.userId);
+    
+    escutarMudancasNuvem();
+    enviarDadosParaNuvem();
+    
+    console.log("Firebase inicializado com sucesso!");
+    
+}catch(error){
+    console.error("Erro ao inicializar Firebase:", error);
+    alert("Erro ao conectar com Firebase: " + error.message);
+}
+
+}
+
+function enviarDadosParaNuvem(){
+
+if(!dbRef || !firebaseConfig.syncEnabled) return;
+
+const dados = {
+    ordens: ordens,
+    rotas: rotas,
+    transferencias: transferencias,
+    categoriasScripts: categoriasScripts,
+    scriptsDeAtendimento: scriptsDeAtendimento,
+    personalizacao: personalizacao,
+    timestamp: Date.now()
+};
+
+dbRef.set(dados).catch(error=>{
+    console.error("Erro ao enviar dados para nuvem:", error);
+});
+
+}
+
+function escutarMudancasNuvem(){
+
+if(!dbRef || !firebaseConfig.syncEnabled) return;
+
+dbRef.on('value', (snapshot)=>{
+    const dados = snapshot.val();
+    if(dados && dados.timestamp){
+        const timestampLocal = localStorage.getItem("lastSyncTimestamp") || 0;
+        
+        if(dados.timestamp > timestampLocal){
+            if(dados.os) os = dados.os;
+            if(dados.rotas) rotas = dados.rotas;
+            if(dados.transferencias) transferencias = dados.transferencias;
+            if(dados.categoriasScripts) categoriasScripts = dados.categoriasScripts;
+            if(dados.scriptsDeAtendimento) scriptsDeAtendimento = dados.scriptsDeAtendimento;
+            if(dados.personalizacao) personalizacao = dados.personalizacao;
+            
+            localStorage.setItem("os", JSON.stringify(os));
+            localStorage.setItem("rotas", JSON.stringify(rotas));
+            localStorage.setItem("transferencias", JSON.stringify(transferencias));
+            localStorage.setItem("categoriasScripts", JSON.stringify(categoriasScripts));
+            localStorage.setItem("scriptsDeAtendimento", JSON.stringify(scriptsDeAtendimento));
+            localStorage.setItem("personalizacao", JSON.stringify(personalizacao));
+            localStorage.setItem("lastSyncTimestamp", dados.timestamp);
+            
+            renderizarOS();
+            renderizarRotas();
+            renderizarTransferencias();
+            renderizarAbasScripts();
+            renderizarScripts();
+            aplicarPersonalizacao();
+            
+            console.log("Dados sincronizados da nuvem!");
+        }
+    }
+});
+
+}
 
 /* CONFIG */
 
@@ -1480,6 +1699,8 @@ ordens.unshift(nova);
 
 localStorage.setItem("ordens", JSON.stringify(ordens));
 
+enviarDadosParaNuvem();
+
 renderizarOS();
 
 limparOS();
@@ -1564,6 +1785,8 @@ return b.id - a.id;
 
 localStorage.setItem("ordens", JSON.stringify(ordens));
 
+enviarDadosParaNuvem();
+
 renderizarOS();
 
 }
@@ -1583,6 +1806,8 @@ os.status !== "LANÇADA"
 );
 
 localStorage.setItem("ordens", JSON.stringify(ordens));
+
+enviarDadosParaNuvem();
 
 renderizarOS();
 
@@ -1733,6 +1958,8 @@ ordens = ordens.filter(os=>os.id !== id);
 
 localStorage.setItem("ordens", JSON.stringify(ordens));
 
+enviarDadosParaNuvem();
+
 renderizarOS();
 
 }
@@ -1805,6 +2032,8 @@ status:"PENDENTE"
 rotas.unshift(nova);
 
 localStorage.setItem("rotas", JSON.stringify(rotas));
+
+enviarDadosParaNuvem();
 
 renderizarRotas();
 
@@ -1892,6 +2121,8 @@ localStorage.setItem(
 JSON.stringify(rotas)
 );
 
+enviarDadosParaNuvem();
+
 renderizarRotas();
 
 }
@@ -1911,6 +2142,8 @@ r.status !== "LANÇADA"
 );
 
 localStorage.setItem("rotas", JSON.stringify(rotas));
+
+enviarDadosParaNuvem();
 
 renderizarRotas();
 
@@ -2025,6 +2258,8 @@ rotas = rotas.filter(r=>r.id !== id);
 
 localStorage.setItem("rotas", JSON.stringify(rotas));
 
+enviarDadosParaNuvem();
+
 renderizarRotas();
 
 }
@@ -2121,6 +2356,8 @@ localStorage.setItem(
 "transferencias",
 JSON.stringify(transferencias)
 );
+
+enviarDadosParaNuvem();
 
 renderizarTransferencias();
 
@@ -2228,6 +2465,8 @@ localStorage.setItem(
 JSON.stringify(transferencias)
 );
 
+enviarDadosParaNuvem();
+
 renderizarTransferencias();
 
 }
@@ -2247,6 +2486,8 @@ t.status !== "LANÇADA"
 );
 
 localStorage.setItem("transferencias", JSON.stringify(transferencias));
+
+enviarDadosParaNuvem();
 
 renderizarTransferencias();
 
@@ -2367,6 +2608,8 @@ localStorage.setItem(
 "transferencias",
 JSON.stringify(transferencias)
 );
+
+enviarDadosParaNuvem();
 
 renderizarTransferencias();
 
@@ -2700,6 +2943,8 @@ if(categoriaScriptAtual === id){
 localStorage.setItem("categoriasScripts", JSON.stringify(categoriasScripts));
 localStorage.setItem("scriptsDeAtendimento", JSON.stringify(scriptsDeAtendimento));
 
+enviarDadosParaNuvem();
+
 renderizarAbasScripts();
 renderizarScripts();
 
@@ -2707,6 +2952,10 @@ renderizarScripts();
 
 
 aplicarPersonalizacao();
+
+if(firebaseConfig.syncEnabled && firebaseConfig.apiKey && firebaseConfig.projectId){
+    inicializarFirebase();
+}
 
 renderizarOS();
 renderizarRotas();
